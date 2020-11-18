@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CoinMarketCap</title>
+        <link rel="stylesheet" type="text/css"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <meta charset="utf-8">       
+    </head>
+    <body>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Coin Market Cap</li>
+            </ol>
+          </nav>
+        
+          <div class="d-flex p-3 bd-highlight">
+            <div id='coins'></div>
+          </div>
+       
+
+        <script type="text/javascript">
+            //My api key
+            var apikey = {
+                key: '3a3ddd57-0203-48f8-837c-fd42a8a1598b'
+            }
+
+        //GET Fetch Requisition
+        fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=' +
+                apikey.key)
+                .then((response) => {
+                    if(!response.ok) throw new Error('Erro ao executar a requisição, status ' + response.status);
+                    return response.json();
+            })
+            .then((api) => {
+                
+                var texto = "";
+                // Get 10 coins and symbols 
+                for(let i = 0; i < 40; i++){
+
+
+
+                //Show API information
+
+                   texto = texto + `
+                   <div class="media">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Nome</th> 
+                          <th scope="col">Simbolo</th> 
+                          <th scope="col">Primeira data histórica</th> 
+                        </tr>
+                      </thead>  
+                      <tbody>
+                        <tr>
+                        <th scope="row">${api.data[i].name}</th>
+                        <td>${api.data[i].symbol}</td>
+                        <td>${api.data[i].first_historical_data}</td>
+                        </tr>
+                     </tbody>
+                    </table>
+                    </div>
+               
+                    `;
+
+                    document.getElementById("coins").innerHTML = texto;
+                    
+                }
+            })
+            .catch((error) => {
+                console.error(error.message);
+            });
+        </script>    
+    </body>
+</html>
